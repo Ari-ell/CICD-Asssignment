@@ -92,5 +92,5 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.https://hooks.slack.com/services/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 }}
+          SLACK_WEBHOOK_URL: ${{ secrets.TESTSUBMISSION }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

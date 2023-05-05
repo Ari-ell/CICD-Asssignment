@@ -24,7 +24,7 @@ jobs:
       - name: deploy 
         run: railway up
         env:
-          RAILWAY_TOKEN: ${{ secrets.761e7275-70c3-47d0-ac4e-7b5e8626374a }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY }}
 
       - name: Send Github Action trigger data to Slack
         id: Slack
@@ -92,5 +92,5 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.https://hooks.slack.com/services/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 }}
+          SLACK_WEBHOOK_URL: ${{ secrets.ASSIGNMENT_SUBMISSION }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

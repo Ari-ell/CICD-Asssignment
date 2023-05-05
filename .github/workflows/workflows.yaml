@@ -1,0 +1,96 @@
+name: dovBearAssignment
+
+on:
+  push:
+    branches:
+      - 'release/v*.*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, '#NORUN')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+    
+      - name: Node.js Setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: deploy 
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.761e7275-70c3-47d0-ac4e-7b5e8626374a }}
+
+      - name: Send Github Action trigger data to Slack
+        id: Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.https://hooks.slack.com/services/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 }}
+        with:
+          status: ${{ job.status }}
+          fields: |
+
+      - name: Send custom JSON data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "DipSA 56 CI/CD Submission",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Name:* Aye Thi Han"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Email:* e1112936@u.nus.edu"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Metriculation:* A0269553R"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*  https://github.com/Ari-ell/CICD-Asssignment"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "https://cicd-asssignment-production.up.railway.app/"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Go",
+                      "emoji": true
+                    },
+                    "value": "Go",
+                    "url": "https://cicd-asssignment-production.up.railway.app/",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.https://hooks.slack.com/services/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 }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
